@@ -39,7 +39,7 @@ Consider the following example, which uses a stock EntityUserProvider:
 ```yml
 services:
     acme.auto_login_user_provider:
-        # Assume this class implements AutoLoginUserProviderInterface
+        # Assume this class implements Jmikola\AutoLogin\User\AutoLoginUserProviderInterface
         class: Acme\UserBundle\Security\AutoLoginUserProvider
 
 security:
@@ -88,7 +88,7 @@ defining a custom service for `fos_user.user_manager`:
 services:
     acme.user_manager:
         # This class extends the appropriate UserManager from FOSUserBundle
-        # and implements AutoLoginUserProviderInterface
+        # and implements Jmikola\AutoLogin\User\AutoLoginUserProviderInterface
         class: Acme\UserBundle\Model\UserManager
         # Note: the remaining service configuration is abridged
 

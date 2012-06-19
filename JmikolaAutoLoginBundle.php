@@ -2,7 +2,7 @@
 
 namespace Jmikola\AutoLoginBundle;
 
-use Jmikola\AutoLoginBundle\Security\AutoLoginFactory;
+use Jmikola\AutoLoginBundle\DependencyInjection\Security\AutoLoginFactory;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
