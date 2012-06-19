@@ -1,6 +1,6 @@
 <?php
 
-namespace Jmikola\AutoLoginBundle\Security;
+namespace Jmikola\AutoLoginBundle\DependencyInjection\Security;
 
 use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\SecurityFactoryInterface;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
