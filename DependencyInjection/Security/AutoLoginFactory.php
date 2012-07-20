@@ -3,37 +3,18 @@
 namespace Jmikola\AutoLoginBundle\DependencyInjection\Security;
 
 use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\SecurityFactoryInterface;
+use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\AbstractFactory;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class AutoLoginFactory implements SecurityFactoryInterface
+class AutoLoginFactory extends AbstractFactory
 {
-    /**
-     * @see Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\SecurityFactoryInterface::create()
-     */
-    public function create(ContainerBuilder $container, $id, $config, $userProvider, $defaultEntryPoint)
+    public function __construct()
     {
-        $providerId = 'jmikola_auto_login.security.authentication.provider.'.$id;
-        $provider = $container
-            ->setDefinition($providerId, new DefinitionDecorator('jmikola_auto_login.security.authentication.provider'))
-            ->replaceArgument(0, new Reference($userProvider))
-            ->replaceArgument(2, $id)
-        ;
-
-        if ($config['auto_login_user_provider']) {
-            $provider->addArgument(new Reference($config['auto_login_user_provider']));
-        }
-
-        $listenerId = 'jmikola_auto_login.security.authentication.listener.'.$id;
-        $container
-            ->setDefinition($listenerId, new DefinitionDecorator('jmikola_auto_login.security.authentication.listener'))
-            ->replaceArgument(2, $id)
-            ->replaceArgument(3, $config['token_param'])
-        ;
-
-        return array($providerId, $listenerId, $defaultEntryPoint);
+        $this->addOption('auto_login_user_provider', null);
+        $this->addOption('token_param', '_al');
     }
 
     /**
@@ -53,16 +34,45 @@ class AutoLoginFactory implements SecurityFactoryInterface
     }
 
     /**
-     * @see Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\SecurityFactoryInterface::addConfiguration()
+     * {@inheritdoc}
      */
-    public function addConfiguration(NodeDefinition $node)
+    protected function createAuthProvider(ContainerBuilder $container, $id, $config, $userProviderId)
     {
-        $builder = $node->children();
-
-        $builder
-            ->scalarNode('auto_login_user_provider')->defaultNull()->end()
-            ->scalarNode('provider')->end()
-            ->scalarNode('token_param')->defaultValue('_al')->end()
+        $providerId = 'jmikola_auto_login.security.authentication.provider.'.$id;
+        $provider = $container
+            ->setDefinition($providerId, new DefinitionDecorator('jmikola_auto_login.security.authentication.provider'))
+            ->replaceArgument(0, new Reference($userProviderId))
+            ->replaceArgument(2, $id)
         ;
+
+        if ($config['auto_login_user_provider']) {
+            $provider->addArgument(new Reference($config['auto_login_user_provider']));
+        }
+
+        return $providerId;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createListener($container, $id, $config, $userProvider)
+    {
+        $listenerId = $this->getListenerId();
+        $listener = new DefinitionDecorator($listenerId);
+        $listener->replaceArgument(2, $id);
+        $listener->replaceArgument(3, $config['token_param']);
+
+        $listenerId .= '.'.$id;
+        $container->setDefinition($listenerId, $listener);
+
+        return $listenerId;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getListenerId()
+    {
+        return 'jmikola_auto_login.security.authentication.listener';
     }
 }
