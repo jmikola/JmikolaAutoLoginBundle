@@ -1,19 +1,30 @@
 # JmikolaAutoLoginBundle
 
-This bundle implements a Symfony2 security firewall listener to authenticate
-users based on a single query parameter. This is useful for providing one-click
-login functionality in email and newsletter links.
+This bundle integrates the [AutoLogin][] library with Symfony2, which implements
+a security firewall listener to authenticate users based on a single query
+parameter. This is useful for providing one-click login functionality in email
+and newsletter links.
 
-## Compatibility
+  [AutoLogin]: https://github.com/jmikola/AutoLogin
 
-This bundle's `master` branch maintains compatibility with Symfony2's master
-branch. The 1.0.x tag for this bundle tracks its `master` branch.
+## Installation
 
-There is no support for Symfony 2.0.x.
+The bundle is published as a [package][] and is installable via [Composer][]:
+
+```
+$ composer require jmikola/auto-login-bundle=~1.0
+```
+
+  [package]: https://packagist.org/packages/jmikola/auto-login-bundle
+  [Composer]: http://getcomposer.org/
+
+### Compatibility
+
+This bundle requires Symfony 2.1 or above. There is no support for Symfony 2.0.
 
 ## Configuration
 
-This bundle implements a firewall listener, which is configured via the
+This bundle registers a firewall listener, which is configured via the
 `jmikola_auto_login` key in your security component's firewall configuration.
 
 ### Listener Options
@@ -27,12 +38,14 @@ The AutoLoginFactory defines the following listener options:
     not implement the required interface (in addition to UserProviderInterface).
  * `provider`: User provider key. This is a standard option for most security
     listeners. If undefined, the default user provider for the firewall
-    is used (see: [SecurityBundle docs][]).
+    is used (see: [SecurityBundle documentation][]).
  * `token_param`: The query parameter to be checked for an auto-login token.
     The presence of this query parameter will determine if the auto-login
     listener attempts authentication. In that respect, it is similar to the
     `check_path` option for the form-login listener. If undefined, the option
     defaults to `_al`.
+
+  [SecurityBundle documentation]: http://symfony.com/doc/current/book/security.html#using-multiple-user-providers
 
 ### Security Configuration Examples
 
@@ -99,5 +112,4 @@ fos_user:
         user_manager: acme.user_manager
 ```
 
-  [SecurityBundle docs]: http://symfony.com/doc/current/book/security.html#using-multiple-user-providers
   [FOSUserBundle]: https://github.com/FriendsOfSymfony/FOSUserBundle
