@@ -19,5 +19,10 @@
     "autoload": {
         "psr-0": { "Jmikola\\AutoLoginBundle": "" }
     },
-    "target-dir": "Jmikola/AutoLoginBundle"
+    "target-dir": "Jmikola/AutoLoginBundle",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.1.x-dev"
+        }
+    }
 }
