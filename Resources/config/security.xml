@@ -7,9 +7,6 @@
     <parameters>
         <parameter key="jmikola_auto_login.security.authentication.listener.class">Jmikola\AutoLogin\Http\Firewall\AutoLoginListener</parameter>
         <parameter key="jmikola_auto_login.security.authentication.provider.class">Jmikola\AutoLogin\Authentication\Provider\AutoLoginProvider</parameter>
-        <parameter key="jmikola_auto_login.options" type="collection">
-            <parameter key="on_already_authenticated">ignore</parameter>
-        </parameter>
     </parameters>
 
     <services>
@@ -21,7 +18,7 @@
             <argument /> <!-- Token query parameter -->
             <argument type="service" id="logger" on-invalid="null" />
             <argument type="service" id="event_dispatcher" on-invalid="null"/>
-            <argument>%jmikola_auto_login.options%</argument>
+            <argument /> <!-- Options -->
         </service>
 
         <service id="jmikola_auto_login.security.authentication.provider" class="%jmikola_auto_login.security.authentication.provider.class%" abstract="true" public="false">
