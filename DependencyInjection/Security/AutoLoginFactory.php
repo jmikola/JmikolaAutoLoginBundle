@@ -31,6 +31,9 @@ class AutoLoginFactory implements SecurityFactoryInterface
             ->setDefinition($listenerId, new DefinitionDecorator('jmikola_auto_login.security.authentication.listener'))
             ->replaceArgument(2, $id)
             ->replaceArgument(3, $config['token_param'])
+            ->replaceArgument(6, array(
+                'override_already_authenticated' => $config['override_already_authenticated'],
+            ))
         ;
 
         return array($providerId, $listenerId, $defaultEntryPoint);
@@ -63,6 +66,7 @@ class AutoLoginFactory implements SecurityFactoryInterface
             ->scalarNode('auto_login_user_provider')->defaultNull()->end()
             ->scalarNode('provider')->end()
             ->scalarNode('token_param')->defaultValue('_al')->end()
+            ->booleanNode('override_already_authenticated')->defaultFalse()->end()
         ;
     }
 }

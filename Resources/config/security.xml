@@ -18,6 +18,7 @@
             <argument /> <!-- Token query parameter -->
             <argument type="service" id="logger" on-invalid="null" />
             <argument type="service" id="event_dispatcher" on-invalid="null"/>
+            <argument /> <!-- Options -->
         </service>
 
         <service id="jmikola_auto_login.security.authentication.provider" class="%jmikola_auto_login.security.authentication.provider.class%" abstract="true" public="false">

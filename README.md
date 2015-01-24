@@ -44,6 +44,9 @@ The AutoLoginFactory defines the following listener options:
     listener attempts authentication. In that respect, it is similar to the
     `check_path` option for the form-login listener. If undefined, the option
     defaults to `_al`.
+ * `override_already_authenticated`: Boolean option determines whether an
+    auto-login token should override an existing, authenticated session. This
+    option defaults to false.
 
   [SecurityBundle documentation]: http://symfony.com/doc/current/book/security.html#using-multiple-user-providers
 
