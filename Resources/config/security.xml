@@ -12,7 +12,7 @@
     <services>
         <service id="jmikola_auto_login.security.authentication.listener" class="%jmikola_auto_login.security.authentication.listener.class%" abstract="true" public="false">
             <tag name="monolog.logger" channel="security" />
-            <argument type="service" id="security.context" />
+            <argument type="service" id="jmikola_auto_login.token_storage_or_security_context" />
             <argument type="service" id="security.authentication.manager" />
             <argument /> <!-- Provider-shared key -->
             <argument /> <!-- Token query parameter -->
