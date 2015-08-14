@@ -26,9 +26,15 @@ class AutoLoginFactory implements SecurityFactoryInterface
             $provider->addArgument(new Reference($config['auto_login_user_provider']));
         }
 
+        // Fall back to security.context service for BC with Symfony <2.6
+        $tokenStorageReference = interface_exists('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface')
+            ? new Reference('security.token_storage')
+            : new Reference('security.context');
+
         $listenerId = 'jmikola_auto_login.security.authentication.listener.'.$id;
         $container
             ->setDefinition($listenerId, new DefinitionDecorator('jmikola_auto_login.security.authentication.listener'))
+            ->replaceArgument(0, $tokenStorageReference)
             ->replaceArgument(2, $id)
             ->replaceArgument(3, $config['token_param'])
             ->replaceArgument(6, array(
