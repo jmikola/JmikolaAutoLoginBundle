@@ -12,7 +12,7 @@
     <services>
         <service id="jmikola_auto_login.security.authentication.listener" class="%jmikola_auto_login.security.authentication.listener.class%" abstract="true" public="false">
             <tag name="monolog.logger" channel="security" />
-            <argument type="service" id="security.context" />
+            <argument /> <!-- security.token_storage or security.context for Symfony <2.6 -->
             <argument type="service" id="security.authentication.manager" />
             <argument /> <!-- Provider-shared key -->
             <argument /> <!-- Token query parameter -->
