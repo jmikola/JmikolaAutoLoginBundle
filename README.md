@@ -15,6 +15,22 @@ The bundle is published as a [package][] and is installable via [Composer][]:
 $ composer require jmikola/auto-login-bundle=~1.0
 ```
 
+You also need to activate the bundle in the AppKernel.php.
+
+```php 
+  
+class AppKernel extends Kernel
+{
+    public function registerBundles()
+    {
+        $bundles = array(
+            //b...
+            new Jmikola\AutoLoginBundle\JmikolaAutoLoginBundle(),
+            // ...
+        );
+    }
+}
+```
   [package]: https://packagist.org/packages/jmikola/auto-login-bundle
   [Composer]: http://getcomposer.org/
 
@@ -22,10 +38,36 @@ $ composer require jmikola/auto-login-bundle=~1.0
 
 This bundle requires Symfony 2.1 or above. There is no support for Symfony 2.0.
 
-## Configuration
+## Usage and configuration
 
-This bundle registers a firewall listener, which is configured via the
-`jmikola_auto_login` key in your security component's firewall configuration.
+You need to create a new `UserProvider` service that implements `Jmikola\AutoLogin\User\AutoLoginUserProviderInterface`. This 
+service is responsable to fetch the correct user object from the URL token. 
+
+This bundle registers a firewall listener, which is configured via the `jmikola_auto_login` key in your security 
+component's firewall configuration. See this example configuration: 
+
+```yml
+// services.yml
+services:
+  acme.auto_login_user_provider:
+    # Implements Jmikola\AutoLogin\User\AutoLoginUserProviderInterface
+    class: Acme\UserBundle\Security\AcmeAutoLoginUserProvider
+```
+```yml
+// security.yml
+security:
+  firewalls:
+    main:
+      # We need not specify a "provider" for our firewall or listeners,
+      # since SecurityBundle will default to the first provider defined.
+      jmikola_auto_login:
+        auto_login_user_provider: acme.auto_login_user_provider
+```
+
+In the example above we need to specify a custom service for `auto_login_user_provider`, since default
+`EntityUserProvider` does not implement `AutoLoginUserProviderInterface`.
+
+When you go to the url `http://your-app.com/whatever?_al=foobar` we will invoke the `AcmeAutoLoginUserProvider::loadUserByAutoLoginToken` with parameter `foobar`. It is your job to make sure the `AcmeAutoLoginUserProvider` returns the correct user for that token. 
 
 ### Listener Options
 
@@ -50,50 +92,27 @@ The AutoLoginFactory defines the following listener options:
 
   [SecurityBundle documentation]: http://symfony.com/doc/current/book/security.html#using-multiple-user-providers
 
-### Security Configuration Examples
+### An other security configuration example
 
-Consider the following example, which uses a stock EntityUserProvider:
-
-```yml
-services:
-    acme.auto_login_user_provider:
-        # Assume this class implements Jmikola\AutoLogin\User\AutoLoginUserProviderInterface
-        class: Acme\UserBundle\Security\AutoLoginUserProvider
-
-security:
-    providers:
-        acme_user_provider:
-            entity: { class: AcmeUserBundle:User, property: username }
-    firewalls:
-        main:
-            # We need not specify a "provider" for our firewall or listeners,
-            # since SecurityBundle will default to the first provider defined.
-            jmikola_auto_login:
-                auto_login_user_provider: acme.auto_login_user_provider
-                token_param: al
-```
-
-In this example, we customized the token's query parameter. We also needed to
-specify a custom service for `auto_login_user_provider`, since
-EntityUserProvider does not implement AutoLoginUserProviderInterface. We could
-simplify our configuration by using a custom service for our user provider,
-which implements both interfaces:
+In this example we specify a provider that implement both `UserProviderInterface` and `AutoLoginUserProviderInterface`. We do 
+also set the URL token to listen for to `auto_login`.
 
 ```yml
 services:
-    acme.versatile_user_provider:
-        # This class implements UserProviderInterface and
-        # AutoLoginUserProviderInterface
-        class: Acme\UserBundle\Security\VersatileUserProvider
+  acme.versatile_user_provider:
+    # This class implements UserProviderInterface and
+    # AutoLoginUserProviderInterface
+    class: Acme\UserBundle\Security\VersatileUserProvider
 
 security:
-    providers:
-        acme_user_provider:
-            id: acme.versatile_user_provider
-    firewalls:
-        main:
-            jmikola_auto_login:
-                token_param: al
+  providers:
+    acme_user_provider:
+      id: acme.versatile_user_provider
+  firewalls:
+    main:
+      jmikola_auto_login:
+        token_param: auto_login
+        override_already_authenticated: false
 ```
 
 ### FOSUserBundle Configuration Example
