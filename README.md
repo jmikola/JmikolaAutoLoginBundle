@@ -41,7 +41,7 @@ This bundle requires Symfony 2.1 or above. There is no support for Symfony 2.0.
 ## Usage and configuration
 
 You need to create a new `UserProvider` service that implements `Jmikola\AutoLogin\User\AutoLoginUserProviderInterface`. This 
-service is responsable to fetch the correct user object from the URL token. 
+service is responsible for fetching the correct user object from the URL token. 
 
 This bundle registers a firewall listener, which is configured via the `jmikola_auto_login` key in your security 
 component's firewall configuration. See this example configuration: 
@@ -53,6 +53,7 @@ services:
     # Implements Jmikola\AutoLogin\User\AutoLoginUserProviderInterface
     class: Acme\UserBundle\Security\AcmeAutoLoginUserProvider
 ```
+
 ```yml
 // security.yml
 security:
@@ -64,10 +65,10 @@ security:
         auto_login_user_provider: acme.auto_login_user_provider
 ```
 
-In the example above we need to specify a custom service for `auto_login_user_provider`, since default
+In the example above we need to specify a custom service for `auto_login_user_provider`, since the default
 `EntityUserProvider` does not implement `AutoLoginUserProviderInterface`.
 
-When you go to the url `http://your-app.com/whatever?_al=foobar` we will invoke the `AcmeAutoLoginUserProvider::loadUserByAutoLoginToken` with parameter `foobar`. It is your job to make sure the `AcmeAutoLoginUserProvider` returns the correct user for that token. 
+When visiting `http://example.com/path?_al=foobar`, we will invoke `AcmeAutoLoginUserProvider::loadUserByAutoLoginToken` with the value of "foobar". You must ensure that `AcmeAutoLoginUserProvider` returns the correct user for that token (or throws a `AutoLoginTokenNotFoundException`).
 
 ### Listener Options
 
@@ -92,10 +93,9 @@ The AutoLoginFactory defines the following listener options:
 
   [SecurityBundle documentation]: http://symfony.com/doc/current/book/security.html#using-multiple-user-providers
 
-### An other security configuration example
+### Another security configuration example
 
-In this example we specify a provider that implement both `UserProviderInterface` and `AutoLoginUserProviderInterface`. We do 
-also set the URL token to listen for to `auto_login`.
+In this example, we specify a provider that implements both `UserProviderInterface` and `AutoLoginUserProviderInterface`. We also customize the URL parameter to use `auto_login` instead of the default.
 
 ```yml
 services:
