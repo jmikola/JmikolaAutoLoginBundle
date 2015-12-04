@@ -7,6 +7,7 @@
     <parameters>
         <parameter key="jmikola_auto_login.security.authentication.listener.class">Jmikola\AutoLogin\Http\Firewall\AutoLoginListener</parameter>
         <parameter key="jmikola_auto_login.security.authentication.provider.class">Jmikola\AutoLogin\Authentication\Provider\AutoLoginProvider</parameter>
+        <parameter key="jmikola_auto_login.security.authentication.success_handler.class">Symfony\Component\Security\Http\Authentication\DefaultAuthenticationSuccessHandler</parameter>
     </parameters>
 
     <services>
@@ -16,6 +17,7 @@
             <argument type="service" id="security.authentication.manager" />
             <argument /> <!-- Provider-shared key -->
             <argument /> <!-- Token query parameter -->
+            <argument type="service" id="jmikola_auto_login.security.authentication.success_handler" />
             <argument type="service" id="logger" on-invalid="null" />
             <argument type="service" id="event_dispatcher" on-invalid="null"/>
             <argument /> <!-- Options -->
@@ -25,6 +27,11 @@
             <argument /> <!-- User provider -->
             <argument type="service" id="security.user_checker" />
             <argument /> <!-- Provider-shared key -->
+        </service>
+
+        <service id="jmikola_auto_login.security.authentication.success_handler" class="%jmikola_auto_login.security.authentication.success_handler.class%" public="false">
+            <argument type="service" id="security.http_utils" />
+            <argument type="collection" /> <!-- Options -->
         </service>
     </services>
 

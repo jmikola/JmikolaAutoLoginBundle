@@ -47,6 +47,13 @@ The AutoLoginFactory defines the following listener options:
  * `override_already_authenticated`: Boolean option determines whether an
     auto-login token should override an existing, authenticated session. This
     option defaults to false.
+ *  `remember_me`: Boolean option that determines whether symfony's remember me 
+    functionality should be enabled. Symfony's built-in remember me service is
+    looking for `remember_me_parameter` set to true in request (default key is 
+    `_remember_me`) so to make it work you should add to your login link 
+    `&_rememeber_me=1` or set `always_remember_me: true` in your remember_me part
+    of firewall configuration
+     
 
   [SecurityBundle documentation]: http://symfony.com/doc/current/book/security.html#using-multiple-user-providers
 
@@ -71,6 +78,7 @@ security:
             jmikola_auto_login:
                 auto_login_user_provider: acme.auto_login_user_provider
                 token_param: al
+                remember_me: true #if you want to enable remember me functionality
 ```
 
 In this example, we customized the token's query parameter. We also needed to
