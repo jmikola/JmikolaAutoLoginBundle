@@ -14,7 +14,7 @@
         "symfony/dependency-injection": "~2.1",
         "symfony/http-kernel": "~2.1",
         "symfony/security-bundle": "~2.1",
-        "jmikola/auto-login": "^1.2.2"
+        "cmyker/auto-login": "dev-master"
     },
     "autoload": {
         "psr-0": { "Jmikola\\AutoLoginBundle": "" }
@@ -24,5 +24,11 @@
         "branch-alias": {
             "dev-master": "1.1.x-dev"
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/cmyker/AutoLogin.git"
+        }
+    ]
 }
