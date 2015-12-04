@@ -104,6 +104,9 @@ security:
                 token_param: al
 ```
 
+If you want to redirect user after login to exact url instead of default also add `&_target_path=PATH` paramater to the 
+link.
+
 ### FOSUserBundle Configuration Example
 
 If you are using [FOSUserBundle][], defining a service ID for your user provider
