@@ -37,10 +37,16 @@ class AutoLoginFactory implements SecurityFactoryInterface
             ->replaceArgument(0, $tokenStorageReference)
             ->replaceArgument(2, $id)
             ->replaceArgument(3, $config['token_param'])
-            ->replaceArgument(6, array(
+            ->replaceArgument(7, array(
                 'override_already_authenticated' => $config['override_already_authenticated'],
             ))
         ;
+
+        if ($config['remember_me']) {
+            $container
+                ->getDefinition($listenerId)
+                ->addTag('security.remember_me_aware', array('id' => $id, 'provider' => $userProvider));
+        }
 
         return array($providerId, $listenerId, $defaultEntryPoint);
     }
@@ -72,6 +78,7 @@ class AutoLoginFactory implements SecurityFactoryInterface
             ->scalarNode('auto_login_user_provider')->defaultNull()->end()
             ->scalarNode('provider')->end()
             ->scalarNode('token_param')->defaultValue('_al')->end()
+            ->scalarNode('remember_me')->defaultFalse()->end()
             ->booleanNode('override_already_authenticated')->defaultFalse()->end()
         ;
     }
