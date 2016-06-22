@@ -1,6 +1,6 @@
 # JmikolaAutoLoginBundle
 
-This bundle integrates the [AutoLogin][] library with Symfony2, which implements
+This bundle integrates the [AutoLogin][] library with Symfony, which implements
 a security firewall listener to authenticate users based on a single query
 parameter. This is useful for providing one-click login functionality in email
 and newsletter links.
