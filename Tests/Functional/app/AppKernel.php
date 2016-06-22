@@ -1,6 +1,6 @@
 <?php
 
-namespace Jmikola\AutoLoginBundle\Tests\Functional;
+namespace Jmikola\AutoLoginBundle\Tests\Functional\app;
 
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -13,16 +13,17 @@ class AppKernel extends Kernel
     public function __construct($config)
     {
         parent::__construct('test', true);
-        
+
         $fs = new Filesystem();
-        if (!$fs->isAbsolutePath($config)) {
+
+        if ( ! $fs->isAbsolutePath($config)) {
             $config = __DIR__.'/config/'.$config;
         }
-        
-        if (!file_exists($config)) {
-            throw new \RuntimeException(sprintf('The config file "%s" does not exist.', $config));
+
+        if ( ! file_exists($config)) {
+            throw new \RuntimeException(sprintf('The config file "%s" does not exist', $config));
         }
-        
+
         $this->config = $config;
     }
 

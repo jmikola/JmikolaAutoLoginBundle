@@ -7,22 +7,19 @@ use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 
 class JmikolaAutoLoginExtensionTest extends AbstractExtensionTestCase
 {
-    protected function getContainerExtensions()
-    {
-        return array(
-            new JmikolaAutoLoginExtension()
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function after_loading_services_will_exist()
+    public function testServicesRegisteredAfterLoading()
     {
         $this->load();
 
         $this->assertContainerBuilderHasService('jmikola_auto_login.security.authentication.provider', 'Jmikola\AutoLogin\Authentication\Provider\AutoLoginProvider');
         $this->assertContainerBuilderHasService('jmikola_auto_login.security.authentication.listener', 'Jmikola\AutoLogin\Http\Firewall\AutoLoginListener');
         $this->assertContainerBuilderHasServiceDefinitionWithTag('jmikola_auto_login.security.authentication.listener', 'monolog.logger', array('channel'=>'security'));
+    }
+
+    protected function getContainerExtensions()
+    {
+        return array(
+            new JmikolaAutoLoginExtension(),
+        );
     }
 }

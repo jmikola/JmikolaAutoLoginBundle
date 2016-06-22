@@ -1,5 +1,5 @@
 imports:
-    - { resource: framework.yml }
+  - { resource: framework.yml }
 
 services:
   acme.auto_login_user_provider:
