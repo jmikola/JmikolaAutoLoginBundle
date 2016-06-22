@@ -1,16 +1,15 @@
 imports:
-  - { resource: framework.yml }
+    - { resource: framework.yml }
 
 services:
-  acme.auto_login_user_provider:
-    class: Jmikola\AutoLoginBundle\Tests\Functional\TestBundle\Service\AcmeAutoLoginUserProvider
+    acme.auto_login_user_provider:
+        class: Jmikola\AutoLoginBundle\Tests\Functional\TestBundle\Service\AcmeAutoLoginUserProvider
 
 security:
-  providers:
-    in_memory:
-      memory: ~
-
-  firewalls:
-    main:
-      jmikola_auto_login:
-        auto_login_user_provider: acme.auto_login_user_provider
+    providers:
+        in_memory:
+            memory: ~
+    firewalls:
+        main:
+            jmikola_auto_login:
+                auto_login_user_provider: acme.auto_login_user_provider
