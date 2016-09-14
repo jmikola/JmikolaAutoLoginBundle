@@ -37,7 +37,7 @@ class AppKernel extends Kernel
 
 ### Compatibility
 
-This bundle requires Symfony 2.1 or above. There is no support for Symfony 2.0.
+This bundle requires Symfony 2.2 or above.
 
 ## Usage and Configuration
 
