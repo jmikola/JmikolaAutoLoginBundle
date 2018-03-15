@@ -4,6 +4,7 @@ namespace Jmikola\AutoLoginBundle\DependencyInjection\Security;
 
 use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\SecurityFactoryInterface;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -17,7 +18,7 @@ class AutoLoginFactory implements SecurityFactoryInterface
     {
         $providerId = 'jmikola_auto_login.security.authentication.provider.'.$id;
         $provider = $container
-            ->setDefinition($providerId, new DefinitionDecorator('jmikola_auto_login.security.authentication.provider'))
+            ->setDefinition($providerId, $this->createDefinition('jmikola_auto_login.security.authentication.provider'))
             ->replaceArgument(0, new Reference($userProvider))
             ->replaceArgument(2, $id)
         ;
@@ -33,7 +34,7 @@ class AutoLoginFactory implements SecurityFactoryInterface
 
         $listenerId = 'jmikola_auto_login.security.authentication.listener.'.$id;
         $container
-            ->setDefinition($listenerId, new DefinitionDecorator('jmikola_auto_login.security.authentication.listener'))
+            ->setDefinition($listenerId, $this->createDefinition('jmikola_auto_login.security.authentication.listener'))
             ->replaceArgument(0, $tokenStorageReference)
             ->replaceArgument(2, $id)
             ->replaceArgument(3, $config['token_param'])
@@ -43,6 +44,21 @@ class AutoLoginFactory implements SecurityFactoryInterface
         ;
 
         return array($providerId, $listenerId, $defaultEntryPoint);
+    }
+
+    /**
+     * @param string $id
+     *
+     * @return ChildDefinition|DefinitionDecorator
+     */
+    private function createDefinition($id)
+    {
+        // Support for Symfony 4.0+
+        if (\class_exists('Symfony\Component\DependencyInjection\ChildDefinition')) {
+            return new ChildDefinition($id);
+        }
+
+        return new DefinitionDecorator($id);
     }
 
     /**
