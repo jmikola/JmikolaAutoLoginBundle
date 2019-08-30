@@ -39,6 +39,9 @@ class AppKernel extends Kernel
 
 This bundle requires Symfony 2.2 or above.
 
+* 1.0 - Support for Symfony : `2.2 - 4.3`.
+* 2.0 - Support for Symfony: `4.3+`.
+
 ## Usage and Configuration
 
 You need to create a new `UserProvider` service that implements
