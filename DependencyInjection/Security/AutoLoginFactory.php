@@ -71,7 +71,7 @@ class AutoLoginFactory implements SecurityFactoryInterface
      */
     public function addConfiguration(NodeDefinition $node)
     {
-        $builder = $node->getNodeBuilder();
+        $builder = $node->children();
 
         $builder
             ->scalarNode('auto_login_user_provider')->defaultNull()->end()
