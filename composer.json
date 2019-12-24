@@ -10,10 +10,10 @@
     ],
     "require": {
         "php": ">=7.1",
-        "symfony/config": "^4.3",
-        "symfony/dependency-injection": "^4.3",
-        "symfony/http-kernel": "^4.3",
-        "symfony/security-bundle": "^4.3",
+        "symfony/config": "^4.3 || ^5.0",
+        "symfony/dependency-injection": "^4.3 || ^5.0",
+        "symfony/http-kernel": "^4.3 || ^5.0",
+        "symfony/security-bundle": "^4.3 || ^5.0",
         "jmikola/auto-login": "^2.0"
     },
     "require-dev": {
