@@ -5,7 +5,6 @@ namespace Jmikola\AutoLoginBundle\DependencyInjection\Security;
 use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\SecurityFactoryInterface;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\DependencyInjection\ChildDefinition;
-use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -27,15 +26,10 @@ class AutoLoginFactory implements SecurityFactoryInterface
             $provider->addArgument(new Reference($config['auto_login_user_provider']));
         }
 
-        // Fall back to security.context service for BC with Symfony <2.6
-        $tokenStorageReference = interface_exists('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface')
-            ? new Reference('security.token_storage')
-            : new Reference('security.context');
-
         $listenerId = 'jmikola_auto_login.security.authentication.listener.'.$id;
         $container
             ->setDefinition($listenerId, $this->createDefinition('jmikola_auto_login.security.authentication.listener'))
-            ->replaceArgument(0, $tokenStorageReference)
+            ->replaceArgument(0, new Reference('security.token_storage'))
             ->replaceArgument(2, $id)
             ->replaceArgument(3, $config['token_param'])
             ->replaceArgument(6, array(
@@ -53,12 +47,7 @@ class AutoLoginFactory implements SecurityFactoryInterface
      */
     private function createDefinition($id)
     {
-        // Support for Symfony 4.0+
-        if (\class_exists('Symfony\Component\DependencyInjection\ChildDefinition')) {
-            return new ChildDefinition($id);
-        }
-
-        return new DefinitionDecorator($id);
+        return new ChildDefinition($id);
     }
 
     /**
