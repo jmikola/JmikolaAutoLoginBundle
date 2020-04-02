@@ -16,7 +16,7 @@ class JmikolaAutoLoginExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasServiceDefinitionWithTag('jmikola_auto_login.security.authentication.listener', 'monolog.logger', array('channel'=>'security'));
     }
 
-    protected function getContainerExtensions()
+    protected function getContainerExtensions(): array
     {
         return array(
             new JmikolaAutoLoginExtension(),

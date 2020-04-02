@@ -17,11 +17,10 @@
         "jmikola/auto-login": "^2.0"
     },
     "require-dev": {
-        "matthiasnoback/symfony-dependency-injection-test": "^0.7.6",
-        "symfony/browser-kit": "^4.3",
-        "symfony/class-loader": "^4.3",
-        "symfony/framework-bundle": "^4.3",
-        "symfony/yaml": "^4.0"
+        "matthiasnoback/symfony-dependency-injection-test": "^4.0",
+        "phpunit/phpunit": "^7.0 || ^8.0",
+        "symfony/browser-kit": "^4.3 || ^5.0",
+        "symfony/framework-bundle": "^4.3 || ^5.0"
     },
     "autoload": {
         "psr-0": { "Jmikola\\AutoLoginBundle": "" }
