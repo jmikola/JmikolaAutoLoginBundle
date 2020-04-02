@@ -1,30 +1,35 @@
 language: php
-
-sudo: false
+dist: xenial
 
 cache:
-    directories:
-        - $HOME/.composer/cache
+  directories:
+    - ${HOME}/.composer/cache/files
 
-php:
-  - 5.3
-  - 5.4
-  - 5.5
-  - 5.6
-  - 7.0
-  - hhvm
+env:
+  global:
+    - COMPOSER_OPTIONS=
 
-matrix:
-    fast_finish: true
-    allow_failures:
-        - php: hhvm
+jobs:
+  include:
+    - stage: Smoke Testing
+      php: "7.3"
 
-    include:
-        - php: 5.3
-          env: COMPOSER_FLAGS="--prefer-lowest"
+    # Test remaining supported PHP versions
+    - stage: Test
+      php: "7.1"
+    - stage: Test
+      php: "7.2"
+    - stage: Test
+      php: "7.4"
 
-before_install:
-    - travis_retry composer self-update
+    # Test against lowest supported dependencies
+    - stage: Test
+      php: "7.1"
+      env:
+        - COMPOSER_OPTIONS=--prefer-lowest
 
-install:
-    - composer update ${COMPOSER_FLAGS} --no-interaction
+before_script:
+  - composer update --no-interaction --no-progress --no-suggest --prefer-dist --prefer-stable ${COMPOSER_OPTIONS}
+
+script:
+  - vendor/bin/phpunit -v
