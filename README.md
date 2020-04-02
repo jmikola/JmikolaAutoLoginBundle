@@ -12,7 +12,7 @@ and newsletter links.
 The bundle is published as a [package][] and is installable via [Composer][]:
 
 ```
-$ composer require jmikola/auto-login-bundle=~1.0
+$ composer require jmikola/auto-login-bundle=^2.0
 ```
 
 Activate the bundle in your application kernel:
@@ -37,10 +37,7 @@ class AppKernel extends Kernel
 
 ### Compatibility
 
-This bundle requires Symfony 2.2 or above.
-
-* 1.0 - Support for Symfony : `2.2 - 4.3`.
-* 2.0 - Support for Symfony: `4.3+`.
+This bundle requires Symfony 4.3 or above.
 
 ## Usage and Configuration
 
