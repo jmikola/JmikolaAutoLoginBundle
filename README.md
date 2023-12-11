@@ -1,3 +1,13 @@
+# Project Status
+[ABANDONED]
+
+This project is no longer being maintained. It works well with Symfony versions until 5.4.x
+
+For projects updating to Symfony 6.x and later, you might want to consider Symfony's [AccessTokenAuthenticator][].
+
+[AccessTokenAuthenticator]: https://symfony.com/doc/current/security/access_token.html
+
+
 # JmikolaAutoLoginBundle
 
 This bundle integrates the [AutoLogin][] library with Symfony, which implements
